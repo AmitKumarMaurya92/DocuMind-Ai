@@ -80,22 +80,29 @@ User → Streamlit Frontend → FastAPI Backend → Document Processing → Text
 ## Project Structure
 
 ```text
-document-qa-system/
+DocuMind-AI/
 │
 ├── frontend/
-│   └── app.py
+│   ├── .streamlit/
+│   │   └── config.toml
+│   └── src/
+│       ├── main.py
+│       ├── api_client.py
+│       └── pages/
+│           └── 1_📄_Documents.py
 │
 ├── backend/
-│   ├── main.py
-│   ├── document_loader.py
-│   ├── rag_pipeline.py
-│   ├── embeddings.py
-│   └── vectorstore.py
+│   ├── app.py
+│   ├── loaders.py
+│   ├── rag.py
+│   └── embeddings.py
 │
 ├── documents/
-├── chroma_db/
-├── sample_documents/
+│   └── sample_docs/
+│
+├── vectorstore/
 ├── requirements.txt
+├── .env
 └── README.md
 ```
 
@@ -187,7 +194,8 @@ GROQ_API_KEY=your_groq_api_key
 ## Run Backend
 
 ```bash
-uvicorn backend.main:app --reload
+cd backend
+python app.py
 ```
 
 Backend URL:
@@ -201,7 +209,8 @@ http://localhost:8000
 ## Run Frontend
 
 ```bash
-streamlit run frontend/app.py
+cd frontend
+streamlit run src/main.py
 ```
 
 Frontend URL:
