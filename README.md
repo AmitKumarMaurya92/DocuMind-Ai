@@ -1,249 +1,266 @@
-# 🧠 DocuMind AI — Intelligent Document Q&A System
+# DocuMind AI - Intelligent Document Question Answering System
 
-> Upload documents. Ask questions. Get accurate, cited answers — powered by Groq cloud LLMs.
+## Overview
 
----
+DocuMind AI is an intelligent document question-answering system built using Retrieval-Augmented Generation (RAG). The application enables users to upload multiple documents and interact with them using natural language queries. The system extracts information from uploaded documents, retrieves relevant content, and generates accurate, context-aware responses.
 
-## ✨ Features
-
-- 📂 **Multi-format Upload** — PDF, DOCX, TXT (up to 20MB each)
-- 🔍 **Semantic Search** — ChromaDB vector search with Sentence Transformers
-- 🤖 **Groq LLM** — Ultra-fast inference powered by Groq (Llama-3.3-70b-versatile)
-- 📎 **Source Citations** — Every answer shows the exact document + page it came from
-- 🗂️ **Multi-document** — Query across all documents or filter to specific ones
-- ⚡ **Async Ingestion** — Background processing; upload returns instantly
+The project addresses the challenge of finding information quickly when knowledge is distributed across multiple reports, manuals, policies, FAQs, and technical documents.
 
 ---
 
-## 🏗️ Architecture Overview
+## Features
 
-```
-┌──────────────────────────────────────────────────────────┐
-│              STREAMLIT FRONTEND (:8501)                  │
-│   Chat Page (main.py)  │  Document Manager (Documents)   │
-│└─────────────────────────┬────────────────────────────────┘
-                          │ HTTP REST
-┌─────────────────────────▼────────────────────────────────┐
-│              FASTAPI BACKEND (:8000)                     │
-│                                                          │
-│  /documents/upload  /documents/  /documents/{id}  /query │
-│                                                          │
-│  ┌──────────┐  ┌────────────┐  ┌──────────────────────┐  │
-│  │loaders.py│  │embeddings.py│  │      rag.py          │  │
-│  │PDF/DOCX/ │  │Sentence    │  │ChromaDB Retrieval +  │  │
-│  │TXT Parser│  │Transformers│  │Groq API Generation   │  │
-│  │          │  │(MiniLM)    │  │                      │  │
-│  └──────────┘  └─────┬──────┘  └──────────────────────┘  │
-│                      │                                    │
-│               ┌──────▼──────┐                            │
-│               │  ChromaDB   │  (saved to vectorstore/)   │
-│               └─────────────┘                            │
-└──────────────────────────────────────────────────────────┘
-```
+### Document Management
 
-### RAG Pipeline Flow
+* Upload multiple documents
+* View uploaded documents
+* Support for:
 
-```
-User Question
-    │
-    ▼
-Embed question (all-MiniLM-L6-v2)
-    │
-    ▼
-ChromaDB similarity_search → Top-5 relevant chunks
-    │
-    ▼
-Build context prompt
-    │
-    ▼
-Groq API (Llama 3.3 70B) → Answer
-    │
-    ▼
-Return: { answer, sources: [{filename, page, preview}] }
-```
+  * PDF
+  * DOCX
+  * TXT
+
+### Intelligent Question Answering
+
+* Natural language querying
+* Multi-document retrieval
+* Context-aware answer generation
+* Fast semantic search using vector embeddings
+
+### User Interface
+
+* Streamlit-based interactive frontend
+* Chat-style question-answer interface
+* Document upload and management dashboard
 
 ---
 
-## 🗂️ Project Structure
+## System Architecture
 
-```
-documind-ai/
-│
-├── backend/
-│   ├── app.py           # FastAPI REST API (upload, list, delete, query)
-│   ├── rag.py           # RAG pipeline (retrieval + Groq API)
-│   ├── embeddings.py    # Sentence Transformer + ChromaDB vector store
-│   └── loaders.py       # Document parsers (PDF/DOCX/TXT)
+User → Streamlit Frontend → FastAPI Backend → Document Processing → Text Chunking → Embedding Generation → ChromaDB Vector Store → Retriever → LLM (Groq/Ollama) → Response Generation
+
+---
+
+## Technology Stack
+
+### Frontend
+
+* Streamlit
+
+### Backend
+
+* FastAPI
+* Uvicorn
+
+### Retrieval Framework
+
+* LangChain
+
+### Vector Database
+
+* ChromaDB
+
+### Embedding Model
+
+* Sentence Transformers
+* all-MiniLM-L6-v2
+
+### Large Language Model
+
+* Groq (Llama 3.1)
+* Ollama (Optional)
+
+### Document Processing
+
+* PyPDF
+* Python-docx
+
+---
+
+## Project Structure
+
+```text
+document-qa-system/
 │
 ├── frontend/
-│   ├── .streamlit/
-│   │   └── config.toml  # Dark violet theme
-│   └── src/
-│       ├── main.py               # Streamlit Chat page
-│       ├── api_client.py         # HTTP client for backend
-│       └── pages/
-│           └── 1_📄_Documents.py # Document Manager page
+│   └── app.py
 │
-├── documents/           # Uploaded raw files (auto-created)
-│   └── sample_docs/     # Sample documents for testing
+├── backend/
+│   ├── main.py
+│   ├── document_loader.py
+│   ├── rag_pipeline.py
+│   ├── embeddings.py
+│   └── vectorstore.py
 │
-├── vectorstore/         # ChromaDB files (auto-created)
-│
+├── documents/
+├── chroma_db/
+├── sample_documents/
 ├── requirements.txt
-├── .env
 └── README.md
 ```
 
 ---
 
-## ⚙️ Setup Instructions
+## Workflow
 
-### Prerequisites
+### Step 1: Document Upload
 
-- Python 3.10+
-- Groq API Key (get a free key at [console.groq.com](https://console.groq.com/))
-- Git
+Users upload PDF, DOCX, or TXT files through the Streamlit interface.
 
-### Step 1 — Clone the Repository
+### Step 2: Text Extraction
+
+The system extracts text from uploaded documents using appropriate parsers.
+
+### Step 3: Text Chunking
+
+Large documents are divided into smaller chunks for efficient retrieval.
+
+### Step 4: Embedding Generation
+
+Text chunks are converted into vector embeddings using Sentence Transformers.
+
+### Step 5: Vector Storage
+
+Embeddings and metadata are stored in ChromaDB.
+
+### Step 6: Query Processing
+
+User questions are converted into embeddings and matched against stored document embeddings.
+
+### Step 7: Retrieval
+
+Top relevant chunks are retrieved using similarity search.
+
+### Step 8: Answer Generation
+
+The retrieved context is passed to the LLM, which generates a concise and accurate answer.
+
+---
+
+## Setup Instructions
+
+### Clone Repository
 
 ```bash
-git clone https://github.com/your-username/documind-ai.git
-cd documind-ai
+git clone https://github.com/AmitKumarMaurya92/DocuMind-AI.git
+cd DocuMind-AI
 ```
 
-### Step 2 — Configure Environment
+### Create Virtual Environment
 
-Create a `.env` file in the root folder and add your Groq API Key:
-
-```env
-GROQ_API_KEY=gsk_your_key_here
-GROQ_MODEL=llama-3.3-70b-versatile
-UPLOAD_DIR=./documents
-VECTORSTORE_DIR=./vectorstore
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-MAX_FILE_SIZE_MB=20
-CHUNK_SIZE=800
-CHUNK_OVERLAP=100
-TOP_K_CHUNKS=5
-BACKEND_URL=http://localhost:8000
+```bash
+python -m venv venv
 ```
 
-### Step 3 — Install Python Dependencies
+### Activate Virtual Environment
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Linux/Mac:
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4 — Start the Backend
+---
+
+## Environment Variables
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+```
+
+---
+
+## Run Backend
 
 ```bash
-cd backend
-python app.py
+uvicorn backend.main:app --reload
 ```
-- Backend runs at: `http://localhost:8000`
-- Swagger docs at: `http://localhost:8000/docs`
 
-### Step 5 — Start the Frontend
+Backend URL:
 
-Open a new terminal window:
+```text
+http://localhost:8000
+```
+
+---
+
+## Run Frontend
 
 ```bash
-cd frontend
-streamlit run src/main.py
+streamlit run frontend/app.py
 ```
-- App opens at: `http://localhost:8501`
 
-### Step 6 — Deploy to Render
+Frontend URL:
 
-1. Go to [Render Dashboard](https://dashboard.render.com/) and create a new **Web Service**.
-2. Connect your GitHub repository.
-3. Add the following **Environment Variables**:
-   - `PYTHON_VERSION`: `3.11.9`
-   - `GROQ_API_KEY`: `your_groq_api_key_here`
-4. Set the **Build Command**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-5. Set the **Start Command**:
-   ```bash
-   cd backend && uvicorn app:app --host 0.0.0.0 --port $PORT
-   ```
-   *(Note: If your code is inside a subfolder, set the Root Directory in Render to that folder).*
-
-
----
-
-## 🌍 Environment Variables
-
-| Variable | Default | Description |
-|---|---|---|
-| `GROQ_API_KEY` | (None) | Groq API Key |
-| `GROQ_MODEL` | `llama-3.3-70b-versatile` | Groq model name |
-| `UPLOAD_DIR` | `./documents` | Directory for uploaded files |
-| `VECTORSTORE_DIR` | `./vectorstore` | Directory for ChromaDB store |
-| `EMBEDDING_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | HuggingFace embedding model |
-| `MAX_FILE_SIZE_MB` | `20` | Maximum file size per upload |
-| `CHUNK_SIZE` | `800` | Text chunk size (tokens) |
-| `CHUNK_OVERLAP` | `100` | Overlap between consecutive chunks |
-| `TOP_K_CHUNKS` | `5` | Number of chunks to retrieve per query |
-| `BACKEND_URL` | `http://localhost:8000` | Backend URL (used by Streamlit) |
-
----
-
-## 🧪 Sample Documents & Test Queries
-
-Four sample documents are included in `documents/sample_docs/`:
-
-| File | Content |
-|---|---|
-| `data_science_internship_jd.txt` | Data science intern job description with responsibilities |
-| `company_hr_policy.txt` | HR policy — leave, attendance, benefits, code of conduct |
-| `technical_faq.txt` | FAQ — setup, architecture, troubleshooting |
-| `product_manual.txt` | GPS device manual — specs, installation, alerts |
-
-### Sample Questions to Try
-
-```
-"What are the responsibilities of a data science intern?"
-"How many days of annual leave do employees get?"
-"What is the maternity leave policy?"
-"How does the RAG pipeline work?"
-"What is the operating temperature range of SmartTrack Pro?"
+```text
+http://localhost:8501
 ```
 
 ---
 
-## 📡 API Reference
+## Sample Questions
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/health` | Health check |
-| `POST` | `/documents/upload` | Upload files (multipart/form-data) |
-| `GET` | `/documents/` | List all documents |
-| `DELETE` | `/documents/{doc_id}` | Delete document + embeddings |
-| `POST` | `/query` | Ask a question |
-
----
-
-## 🎯 Assumptions Made
-
-1. **Local deployment with API services** — No local authentication. Designed as a single-user tool.
-2. **Text-based PDFs only** — Scanned/image-only PDFs are not supported (no OCR).
-3. **English language** — The embedding model and default LLMs are optimized for English text.
-4. **ChromaDB over FAISS** — ChromaDB was chosen as the primary vector store for its clean PersistentClient structure.
+* What are the responsibilities of a data science intern?
+* What is the internship stipend?
+* What is the remote work policy?
+* How often are passwords changed?
+* What benefits are provided to employees?
+* Compare intern leave policy and employee leave policy.
+* How does the company support employee learning?
 
 ---
 
-## 🛠️ Tech Stack
+## Assumptions Made
 
-| Component | Technology |
-|---|---|
-| Backend | Python, FastAPI, Uvicorn |
-| Document Processing | pdfplumber, PyPDF2, python-docx, chardet |
-| Chunking | LangChain RecursiveCharacterTextSplitter |
-| Embeddings | sentence-transformers/all-MiniLM-L6-v2 |
-| Vector Store | ChromaDB |
-| LLM | Groq API (Llama 3.3) |
-| Frontend | Streamlit |
-#   D o c u M i n d - A I  
- 
+1. Uploaded documents contain machine-readable text.
+2. Documents are primarily in English.
+3. Users ask questions related to uploaded documents.
+4. Uploaded files are valid PDF, DOCX, or TXT formats.
+5. Internet access is available when using Groq.
+
+---
+
+## Future Improvements
+
+* Source citation in answers
+* Hybrid Search (BM25 + Vector Search)
+* OCR support for scanned PDFs
+* User authentication
+* Conversation memory
+* Multi-user document collections
+* Docker deployment
+* Cloud deployment support
+
+---
+
+## Sample Documents
+
+The repository includes sample documents for testing:
+
+* Data Science Internship Policy
+* Employee Handbook
+* IT Support Manual
+* Company FAQ
+* Learning and Development Policy
+
+---
+
+## Author
+
+Amit Kumar Maurya
+
+Built as part of an Intelligent Document Question Answering System assignment using RAG, LangChain, ChromaDB, FastAPI, Streamlit, and Groq.
