@@ -231,36 +231,3 @@ http://localhost:8501
 3. Users ask questions related to uploaded documents.
 4. Uploaded files are valid PDF, DOCX, or TXT formats.
 5. Internet access is available when using Groq.
-
----
-
-## Future Improvements
-
-* Source citation in answers
-* Hybrid Search (BM25 + Vector Search)
-* OCR support for scanned PDFs
-* User authentication
-* Conversation memory
-* Multi-user document collections
-* Docker deployment
-* Cloud deployment support
-
----
-
-## Sample Documents
-
-The repository includes sample documents for testing:
-
-* Data Science Internship Policy
-* Employee Handbook
-* IT Support Manual
-* Company FAQ
-* Learning and Development Policy
-
----
-
-## Author
-
-Amit Kumar Maurya
-
-Built as part of an Intelligent Document Question Answering System assignment using RAG, LangChain, ChromaDB, FastAPI, Streamlit, and Groq.
