@@ -1,0 +1,143 @@
+DOCUMIND AI — FREQUENTLY ASKED QUESTIONS (FAQ)
+================================================
+Product Version: 1.0 | Last Updated: June 2024
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+GENERAL QUESTIONS
+-----------------
+
+Q: What is DocuMind AI?
+A: DocuMind AI is an intelligent document question-answering system that allows
+   users to upload PDF, DOCX, and TXT documents and ask natural language questions
+   about their content. It uses a Retrieval-Augmented Generation (RAG) architecture
+   powered by local LLMs (Llama 3, Mistral, or Gemma via Ollama) and FAISS vector
+   search for accurate, context-aware answers.
+
+Q: Do I need an internet connection to use DocuMind AI?
+A: No. DocuMind AI is designed to run 100% locally on your machine. The LLM
+   (via Ollama), embedding model (Sentence Transformers), and vector database
+   (FAISS) all run offline. No data is sent to any external server.
+
+Q: Is my data secure?
+A: Yes. All documents are stored locally on your machine in the /documents folder.
+   No data is uploaded to external APIs or cloud services. The system is fully
+   air-gapped and GDPR-friendly by design.
+
+Q: What file formats are supported?
+A: DocuMind AI supports three file formats:
+   - PDF (.pdf): Using pdfplumber (primary) and PyPDF2 (fallback)
+   - Word Documents (.docx): Using python-docx
+   - Plain Text (.txt): With automatic encoding detection via chardet
+   Maximum file size is 20MB per document.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TECHNICAL QUESTIONS
+-------------------
+
+Q: What LLM models are supported?
+A: DocuMind AI supports any model available through Ollama:
+   - llama3 (default, recommended) — Meta's Llama 3 8B
+   - mistral — Mistral AI 7B
+   - gemma — Google's Gemma 7B
+   - llama3:70b — Llama 3 70B (requires high-end GPU)
+   You can switch models by setting the OLLAMA_MODEL environment variable.
+
+Q: How does the RAG pipeline work?
+A: The RAG (Retrieval-Augmented Generation) pipeline works in 5 steps:
+   Step 1 — Document Ingestion: Uploaded files are parsed into raw text.
+   Step 2 — Chunking: Text is split into overlapping chunks (800 tokens, 100 overlap).
+   Step 3 — Embedding: Each chunk is embedded using sentence-transformers/all-MiniLM-L6-v2.
+   Step 4 — Retrieval: When a question is asked, the top 5 most similar chunks
+             are retrieved from the FAISS vector index.
+   Step 5 — Generation: The retrieved chunks are passed as context to the Ollama LLM,
+             which generates a precise, grounded answer.
+
+Q: What embedding model is used?
+A: The system uses sentence-transformers/all-MiniLM-L6-v2 from HuggingFace.
+   It is a lightweight (80MB) but high-quality model that runs on CPU without
+   requiring a GPU. It produces 384-dimensional embeddings.
+
+Q: What is FAISS and why is it used?
+A: FAISS (Facebook AI Similarity Search) is an efficient library for
+   similarity search over dense vectors. It is used to store document embeddings
+   and perform fast nearest-neighbor search during query time. FAISS is free,
+   open-source, and requires no external database server — it saves to local files.
+
+Q: How long does document ingestion take?
+A: Ingestion time depends on document size and hardware:
+   - Small documents (< 10 pages): 10–30 seconds
+   - Medium documents (10–50 pages): 30–90 seconds
+   - Large documents (50+ pages): 2–5 minutes
+   Ingestion runs as a background task, so you can continue using the app.
+
+Q: Can I query multiple documents at once?
+A: Yes. By default, queries search across ALL uploaded documents. You can also
+   use the sidebar checkboxes in the Chat page to restrict questions to specific
+   selected documents only.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SETUP QUESTIONS
+---------------
+
+Q: What are the system requirements?
+A: Minimum requirements:
+   - CPU: 4-core processor (Intel i5 / AMD Ryzen 5 or equivalent)
+   - RAM: 8GB (16GB recommended for larger models like llama3:70b)
+   - Storage: 10GB free space (for models and vector store)
+   - OS: Windows 10+, macOS 12+, Ubuntu 20.04+
+   - GPU: Optional (Ollama uses CPU by default; GPU dramatically speeds up LLM inference)
+
+Q: How do I install and run Ollama?
+A: Visit https://ollama.ai and download the installer for your OS.
+   After installation:
+   1. Start the Ollama service: ollama serve
+   2. Pull your preferred model: ollama pull llama3
+   3. Verify it works: ollama run llama3 "Hello, who are you?"
+
+Q: How do I start the backend server?
+A: Navigate to the backend directory and run:
+   pip install -r requirements.txt
+   python app.py
+   The server starts at http://localhost:8000
+   API documentation is available at http://localhost:8000/docs
+
+Q: How do I start the Streamlit frontend?
+A: Navigate to the frontend directory and run:
+   streamlit run src/main.py
+   The app opens at http://localhost:8501
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TROUBLESHOOTING
+---------------
+
+Q: The answer says "Cannot connect to Ollama" — what should I do?
+A: Make sure:
+   1. Ollama is installed (download from https://ollama.ai)
+   2. The Ollama service is running: ollama serve
+   3. The model is pulled: ollama pull llama3
+   4. The OLLAMA_BASE_URL in your .env file is http://localhost:11434
+
+Q: Document status is stuck at "Processing" — what happened?
+A: This may indicate a parsing error. Check the backend terminal for error logs.
+   Common causes: corrupted PDF, scanned/image-only PDF (no OCR support),
+   or insufficient memory. Try uploading a different document to confirm.
+
+Q: Answers are inaccurate or hallucinated — how do I improve quality?
+A: Try these approaches:
+   - Use a larger model (llama3:13b or llama3:70b) for better comprehension
+   - Reduce CHUNK_SIZE to 500 for more precise retrieval on dense documents
+   - Increase TOP_K_CHUNKS to 8 for more context
+   - Rephrase your question to be more specific
+
+Q: The app is very slow — how can I speed it up?
+A: LLM inference is the main bottleneck. Options:
+   - Use a smaller model: mistral (7B) is faster than llama3 (8B)
+   - Enable GPU acceleration in Ollama (requires NVIDIA GPU + CUDA)
+   - Reduce num_ctx in rag.py from 4096 to 2048
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Support: github.com/your-repo/document-qa-system/issues

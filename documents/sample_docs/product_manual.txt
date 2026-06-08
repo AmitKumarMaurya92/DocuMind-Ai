@@ -1,0 +1,171 @@
+SMARTTRACK PRO 2000 — PRODUCT MANUAL
+=====================================
+Model: STP-2000-X | Firmware: v4.7.2
+Manufacturer: NovaTech Devices Pvt. Ltd.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAPTER 1 — INTRODUCTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1 About SmartTrack Pro 2000
+------------------------------
+The SmartTrack Pro 2000 (STP-2000-X) is a professional-grade GPS asset tracking
+and fleet management device designed for commercial logistics, construction
+equipment monitoring, and enterprise fleet operations.
+
+Key Features:
+- Real-time GPS tracking with 3-second update intervals
+- 4G LTE Cat-M1 and NB-IoT dual connectivity
+- Integrated accelerometer and gyroscope for motion detection
+- Geofencing support (up to 256 zones per device)
+- Engine immobilizer control via CAN Bus
+- 10,000 mAh built-in battery (72-hour standby without vehicle power)
+- IP67 waterproof and dustproof rating
+- Operating temperature: -40°C to +85°C
+
+1.2 Package Contents
+---------------------
+- SmartTrack Pro 2000 device (1x)
+- Magnetic mount bracket (1x)
+- OBD-II adapter cable (1x)
+- Hard-wire power harness (3-wire: 12V/24V compatible) (1x)
+- SIM card slot cover key (1x)
+- Quick Start Guide (1x)
+- Warranty card (1x)
+
+Note: SIM card is NOT included. A compatible 4G LTE SIM (data plan required)
+must be purchased separately.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAPTER 2 — TECHNICAL SPECIFICATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 GPS/GNSS
+- Chipset: u-blox M10 GNSS
+- Constellations: GPS, GLONASS, Galileo, BeiDou
+- Sensitivity (Tracking): -167 dBm
+- Cold Start: < 30 seconds | Hot Start: < 2 seconds
+- Accuracy: CEP 2.5m (open sky)
+
+2.2 Cellular
+- Bands (4G LTE): B1/B2/B3/B4/B5/B7/B8/B12/B13/B18/B19/B20/B25/B26/B28
+- Fallback: 2G EGPRS
+- Protocols: MQTT, HTTPS, TCP/UDP
+
+2.3 Power
+- Input Voltage: 9V – 90V DC (automotive 12V/24V/48V compatible)
+- Backup Battery: 10,000 mAh Li-Ion (3.7V)
+- Power Consumption (Active): 180mA @ 12V
+- Power Consumption (Sleep): 3.5mA @ 12V
+
+2.4 Physical
+- Dimensions: 105mm × 65mm × 22mm
+- Weight: 148g (with bracket)
+- Enclosure: IP67 rated (IEC 60529)
+- Antenna: Internal GNSS + Cellular; External SMA port (optional)
+
+2.5 I/O Interfaces
+- Digital Inputs: 4 (configurable: ignition sense, door, panic button)
+- Digital Outputs: 2 (relay control: immobilizer, accessory)
+- Analog Inputs: 2 (0–36V, 12-bit ADC for fuel/temperature sensors)
+- Serial: RS-232 and RS-485 (for external sensors and tachographs)
+- CAN Bus: ISO 11898-2 (OBD-II vehicle data: speed, RPM, fuel level)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAPTER 3 — INSTALLATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 SIM Card Installation
+--------------------------
+WARNING: Always power off the device before inserting or removing the SIM card.
+
+1. Use the SIM slot cover key to open the Nano-SIM compartment (left side panel).
+2. Insert a Nano-SIM card (data plan, APN configured) into the slot gold-side down.
+3. Press until you hear a click. Close and lock the cover.
+4. Required APN settings must be configured via the NovaTech portal before first use.
+
+3.2 OBD-II Installation (Plug-and-Play)
+-----------------------------------------
+1. Locate the OBD-II port in your vehicle (typically under the dashboard,
+   driver's side, within 24 inches of the steering column).
+2. Connect the included OBD-II adapter cable to the device's 26-pin connector.
+3. Plug the OBD-II connector firmly into the vehicle's OBD-II port.
+4. The LED indicator will blink GREEN (3 times) to confirm power.
+5. Allow 60 seconds for initial GPS acquisition and server registration.
+
+3.3 Hard-Wire Installation
+---------------------------
+For vehicles without OBD-II or for covert/permanent installation:
+- RED wire  → Constant 12V/24V power (fused with provided 3A fuse)
+- BLACK wire → Vehicle chassis ground
+- ORANGE wire → Ignition switched power (for ignition detection)
+
+Secure the device using the magnetic mount or adhesive tape (included).
+Avoid mounting near metal surfaces that may block the antenna.
+
+3.4 LED Status Indicators
+---------------------------
+LED Color | Pattern          | Status
+Green     | Solid            | GPS fix acquired, server connected
+Green     | Slow blink (2s)  | GPS searching, server connected
+Blue      | Fast blink (0.5s)| Cellular data transmission
+Red       | Solid            | Critical error (check logs)
+Red       | Slow blink       | Low backup battery (< 20%)
+Orange    | Solid            | Device in sleep/power-save mode
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAPTER 4 — CONFIGURATION AND ALERTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 Geofencing
+--------------
+Create up to 256 geofence zones via the NovaTech Cloud Portal:
+- Zone types: Circle (min radius 50m), Polygon, Corridor
+- Alert triggers: Entry, Exit, or Both
+- Alert channels: SMS, Email, Push Notification, Webhook
+
+4.2 Configurable Alerts
+------------------------
+- Speeding: Alert when vehicle exceeds configurable speed threshold (km/h)
+- Harsh Braking: Triggered when deceleration > 0.7G
+- Harsh Acceleration: Triggered when acceleration > 0.5G
+- Cornering: Triggered when lateral force > 0.5G
+- Tampering: Alert on unauthorized device removal (accelerometer-based)
+- Idle Time: Alert when engine is on but vehicle stationary for > N minutes
+- Towing: Detect movement without ignition (anti-theft)
+
+4.3 Engine Immobilizer
+-----------------------
+WARNING: Only qualified technicians should configure the immobilizer output.
+The relay output (Digital Output 1) can be wired to interrupt the fuel pump
+or ignition circuit. Immobilization can be triggered remotely via the portal
+or automatically via geofence exit.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CHAPTER 5 — MAINTENANCE AND WARRANTY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 Maintenance
+--------------
+- Clean with dry cloth only. Do not use solvents or abrasives.
+- Inspect connectors every 6 months for corrosion.
+- Firmware updates are delivered OTA (Over-the-Air) automatically.
+- Battery lifespan: approximately 500 charge cycles (3–5 years typical use).
+
+5.2 Warranty
+------------
+- Standard Warranty: 2 years from date of purchase (manufacturing defects)
+- Extended Warranty: Available for purchase (up to 5 years)
+- Warranty Void If: Unauthorized modifications, physical damage, water ingress
+  beyond IP67 rating, or use outside specified voltage range.
+
+5.3 Support
+-----------
+Technical Support: support@novatech-devices.com
+Support Hours: Mon–Fri, 9 AM – 6 PM IST
+Warranty Claims: warranty@novatech-devices.com
+Documentation: https://docs.novatech-devices.com/stp2000
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+© 2024 NovaTech Devices Pvt. Ltd. All rights reserved.
+Model: STP-2000-X | FCC ID: XYZNT2000 | CE Marked

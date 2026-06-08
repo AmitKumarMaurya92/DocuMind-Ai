@@ -1,0 +1,100 @@
+DATA SCIENCE INTERN — JOB DESCRIPTION
+======================================
+Organization: TechVision Analytics Pvt. Ltd.
+Location: Bangalore, India (Hybrid)
+Duration: 6 Months
+Stipend: ₹25,000 – ₹35,000 per month
+
+ABOUT THE ROLE
+--------------
+TechVision Analytics is looking for a motivated Data Science Intern to join our
+AI & Machine Learning team. The intern will work closely with senior data scientists
+and engineers to build, evaluate, and deploy machine learning models that drive
+business decisions across our product portfolio.
+
+RESPONSIBILITIES
+----------------
+1. Data Collection and Preprocessing
+   - Collect structured and unstructured data from internal databases, APIs, and
+     third-party sources.
+   - Perform data cleaning, normalization, and transformation using Python (Pandas,
+     NumPy).
+   - Handle missing values, outliers, and data imbalance issues.
+
+2. Exploratory Data Analysis (EDA)
+   - Conduct thorough exploratory data analysis to uncover patterns, correlations,
+     and anomalies.
+   - Create visualizations using Matplotlib, Seaborn, and Plotly to communicate
+     findings to stakeholders.
+
+3. Model Development
+   - Build and train machine learning models for classification, regression,
+     clustering, and NLP tasks.
+   - Experiment with algorithms including Linear Regression, Random Forest,
+     Gradient Boosting (XGBoost, LightGBM), and Neural Networks.
+   - Use frameworks like Scikit-learn, TensorFlow, and PyTorch.
+
+4. Model Evaluation and Optimization
+   - Evaluate models using appropriate metrics (accuracy, F1, AUC-ROC, RMSE).
+   - Tune hyperparameters using Grid Search, Random Search, and Bayesian optimization.
+   - Conduct cross-validation to ensure model generalizability.
+
+5. NLP and LLM Integration
+   - Assist in building NLP pipelines for text classification, sentiment analysis,
+     and information extraction.
+   - Work with pre-trained language models (BERT, GPT, LLaMA) for fine-tuning tasks.
+   - Contribute to internal RAG (Retrieval-Augmented Generation) projects.
+
+6. Data Pipeline Development
+   - Build ETL pipelines to automate data ingestion and transformation workflows.
+   - Work with SQL, MongoDB, and cloud storage (AWS S3, Google Cloud Storage).
+
+7. Reporting and Documentation
+   - Document experiments, methodologies, and results in Jupyter notebooks.
+   - Present findings in weekly team meetings using dashboards (Tableau, Power BI).
+   - Write clean, maintainable, and well-commented code following PEP 8 standards.
+
+REQUIRED SKILLS
+---------------
+- Programming: Python (mandatory), SQL (intermediate)
+- Libraries: Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn
+- Machine Learning: Supervised and unsupervised learning fundamentals
+- Statistics: Probability, hypothesis testing, regression analysis
+- Tools: Jupyter Notebook, Git, VS Code
+- Communication: Ability to explain technical concepts to non-technical audiences
+
+PREFERRED QUALIFICATIONS
+------------------------
+- Currently pursuing or recently completed B.Tech/M.Tech/M.Sc. in Computer Science,
+  Data Science, Statistics, or related field.
+- Previous internship experience in data analytics or ML is a plus.
+- Familiarity with cloud platforms (AWS, GCP, Azure).
+- Knowledge of deep learning frameworks (TensorFlow, PyTorch).
+- Experience with NLP libraries (Hugging Face Transformers, spaCy, NLTK).
+- Exposure to big data tools (Spark, Hadoop) is advantageous.
+
+WHAT WE OFFER
+-------------
+- Mentorship from senior ML engineers and data scientists.
+- Hands-on experience with real-world production datasets.
+- Access to high-performance GPU compute resources.
+- Letter of Recommendation and Performance Certificate upon completion.
+- Pre-Placement Offer (PPO) based on performance.
+- Flexible work hours and a collaborative work culture.
+
+SELECTION PROCESS
+-----------------
+Round 1: Resume Screening
+Round 2: Online Aptitude and Coding Test (45 minutes)
+Round 3: Technical Interview — Python, ML concepts, Statistics
+Round 4: Case Study Presentation
+Round 5: HR Interview
+
+HOW TO APPLY
+------------
+Send your resume, GitHub profile link, and a brief cover letter to:
+careers@techvision-analytics.com
+Subject: "Data Science Intern Application — [Your Name]"
+
+Application Deadline: July 31, 2024
+Expected Start Date: August 15, 2024
